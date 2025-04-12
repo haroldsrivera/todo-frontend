@@ -25,3 +25,7 @@ ng serve
 ```
 
 Cuando se termine de compilar abrir el navegador e ir a la siguiente url: `http://localhost:4200/`.
+
+## Variables de entorno
+
+En el archivo src/environments/environment.ts se configuran las variables de entorno, como la ip del backend.

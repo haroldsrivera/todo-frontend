@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TodoService } from '../../services/todo.service';
 import { AuthService } from '../../services/auth.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  
   email = '';
   password = '';
   error = '';
@@ -30,12 +33,21 @@ export class LoginComponent {
           this.authService.login(); 
           this.router.navigate(['/todo']);
         } else {
-          this.error = 'Credenciales incorrectas.';
+          this.showToast('errorCredentials');
         }
       },
       error: () => {
-        this.error = 'Credenciales incorrectas.';
+        this.showToast('errorCredentials');
       }
     });
   }
+
+  showToast(toastId: string) {
+      const toastElement = document.getElementById(toastId);
+      if (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+      }
+    }
+
 }

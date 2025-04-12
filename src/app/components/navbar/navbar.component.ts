@@ -16,6 +16,7 @@ export class NavbarComponent {
     private router: Router
   ) {}
 
+  // Verificar en que ruta está
   get isLoginRoute(): boolean {
     return this.router.url === '/login';
   }

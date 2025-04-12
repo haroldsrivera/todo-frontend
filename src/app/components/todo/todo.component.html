@@ -20,7 +20,7 @@
                 required
                 #titleInput="ngModel"
               />
-              <div *ngIf="titleInput.invalid && titleInput.touched" class="text-danger small mt-1">
+              <div *ngIf="titleInput.invalid && titleInput.touched" class="text-danger small">
                 El título es obligatorio.
               </div>
             </div>
@@ -35,7 +35,7 @@
                 required
                 #descInput="ngModel"
               />
-              <div *ngIf="descInput.invalid && descInput.touched" class="text-danger small mt-1">
+              <div *ngIf="descInput.invalid && descInput.touched" class="text-danger small">
                 La descripción es obligatoria.
               </div>
             </div>
@@ -92,7 +92,7 @@
               </tr>
               <tr *ngIf="todos.length === 0">
                 <td colspan="4" class="text-center text-muted py-4">
-                  No hay tareas registradas.
+                  Sin registros.
                 </td>
               </tr>
             </tbody>
@@ -115,7 +115,7 @@
   >
     <div class="d-flex">
       <div class="toast-body">
-        ✅ Tarea creada correctamente.
+        Tarea creada correctamente.
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
@@ -130,7 +130,7 @@
   >
     <div class="d-flex">
       <div class="toast-body">
-        🗑 Tarea eliminada correctamente.
+        Tarea eliminada correctamente.
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>

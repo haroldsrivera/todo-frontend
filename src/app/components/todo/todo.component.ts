@@ -1,5 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+  import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -23,7 +22,6 @@ import * as bootstrap from 'bootstrap';
         ButtonModule,
         CalendarModule,
         ConfirmDialogModule,
-        HttpClientModule
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './todo.component.html',
@@ -61,7 +59,6 @@ export class TodoComponent implements OnInit {
       this.showToast('deleteToast');
     });
   }
-  
 
   showToast(toastId: string) {
     const toastElement = document.getElementById(toastId);
@@ -70,6 +67,5 @@ export class TodoComponent implements OnInit {
       toast.show();
     }
   }
-  
 
 }

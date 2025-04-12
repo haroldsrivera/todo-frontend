@@ -4,12 +4,7 @@
         <h5 class="mb-0 fw-bold">Iniciar Sesión</h5>
       </div>
       <div class="card-body p-4">
-        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
-  
-          <div *ngIf="error" class="alert alert-danger text-center">
-            {{ error }}
-          </div>
-  
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm">   
           <div class="mb-3">
             <label class="form-label fw-semibold">Correo electrónico</label>
             <input
@@ -44,3 +39,20 @@
     </div>
   </div>
   
+<!-- TOAST de error en al autentificación -->
+  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+    <div
+      class="toast align-items-center text-bg-danger border-0 mt-2"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      id="errorCredentials"
+    >
+      <div class="d-flex">
+        <div class="toast-body">
+          Credenciales incorrectas.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
