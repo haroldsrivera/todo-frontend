@@ -1,4 +1,7 @@
 .color-left {
-    background-color: #62aed4; 
+    background-color: rgb(129, 153, 185); 
   }
   
+.color-table {
+  background-color: rgb(63, 71, 178);
+}

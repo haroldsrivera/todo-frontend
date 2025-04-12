@@ -1,6 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm px-3 color-navbar">
-    <a class="navbar-brand fw-bold" href="#">
-      Mi Lista de Tareas
-    </a>
-  </nav>
-  
+  <a class="navbar-brand fw-bold" href="#">
+    Mi Lista de Tareas
+  </a>
+
+  <button
+    *ngIf="!isLoginRoute && authService.isAuthenticated()"
+    class="btn btn-outline-light ms-auto"
+    (click)="logout()"
+  >
+    Cerrar sesión
+  </button>
+</nav>

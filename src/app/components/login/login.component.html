@@ -1,0 +1,46 @@
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 w-50">
+      <div class="card-header bg-gradient color-login text-white rounded-top-4">
+        <h5 class="mb-0 fw-bold">Iniciar Sesión</h5>
+      </div>
+      <div class="card-body p-4">
+        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+  
+          <div *ngIf="error" class="alert alert-danger text-center">
+            {{ error }}
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control form-control-lg rounded-3"
+              name="email"
+              [(ngModel)]="email"
+              required
+            />
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Contraseña</label>
+            <input
+              type="password"
+              class="form-control form-control-lg rounded-3"
+              name="password"
+              [(ngModel)]="password"
+              required
+            />
+          </div>
+  
+          <button
+            type="submit"
+            class="btn btn-lg color-login w-100 text-white rounded-3 fw-semibold"
+            [disabled]="loginForm.invalid"
+          >
+            <h5 class="fw-bold m-0">Entrar</h5>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
