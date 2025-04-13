@@ -1,0 +1,17 @@
+<div class="modal fade" id="taskDetailModal" tabindex="-1" aria-labelledby="taskDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header text-white rounded-top-4">
+        <h5 class="fw-bold" id="taskDetailModalLabel">Detalle de la Tarea</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Título:</strong> <span class="text-wrap">{{ task?.title }}</span></p>
+        <p><strong>Descripción:</strong><br />
+          <span class="text-wrap d-block">{{ task?.description }}</span>
+        </p>
+        <p><strong>Fecha:</strong> {{ task?.date }}</p>
+      </div>
+    </div>
+  </div>
+</div>

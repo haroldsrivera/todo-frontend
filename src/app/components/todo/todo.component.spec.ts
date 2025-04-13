@@ -1,44 +1,77 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Todo } from '../../models/todo.model';
+import { environment } from '../../../environments/environment';
+import { TodoService } from '../../services/todo.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class TodoService {
-  private apiUrl = `${environment.apiUrl}/tasks`;
-  private loginUrl = `${environment.apiUrl}/auth/login`;
+describe('TodoService', () => {
+  let service: TodoService;
+  let httpMock: HttpTestingController;
 
-  constructor(private http: HttpClient) {}
+  const dummyTodos: Todo[] = [
+    { id: 1, title: 'Tarea 1', description: 'Desc 1', date: '2025-04-13' },
+    { id: 2, title: 'Tarea 2', description: 'Desc 2', date: '2025-04-14' }
+  ];
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(this.loginUrl, { email, password });
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [TodoService]
     });
-  }
 
-  getAll(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl, {
-      headers: this.getAuthHeaders()
-    });
-  }
+    service = TestBed.inject(TodoService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
 
-  create(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.apiUrl, todo, {
-      headers: this.getAuthHeaders()
-    });
-  }
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
-      headers: this.getAuthHeaders()
+  it('should retrieve all todos', () => {
+    service.getAll().subscribe(todos => {
+      expect(todos.length).toBe(2);
+      expect(todos).toEqual(dummyTodos);
     });
-  }
-}
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/tasks`);
+    expect(req.request.method).toBe('GET');
+    req.flush(dummyTodos);
+  });
+
+  it('should create a new todo', () => {
+    const newTodo: Todo = { title: 'Nuevo', description: 'Test', date: '2025-04-13' };
+
+    service.create(newTodo).subscribe(todo => {
+      expect(todo.title).toBe('Nuevo');
+    });
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/tasks`);
+    expect(req.request.method).toBe('POST');
+    req.flush({ ...newTodo, id: 3 });
+  });
+
+  it('should delete a todo', () => {
+    const todoId = 1;
+
+    service.delete(todoId).subscribe(response => {
+      expect(response).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/tasks/1`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush({ message: 'Eliminado' });
+  });
+
+  it('should update a todo', () => {
+    const updatedTodo: Todo = { id: 1, title: 'Actualizado', description: 'Modificado', date: '2025-04-15' };
+
+    service.update(1, updatedTodo).subscribe(todo => {
+      expect(todo).toEqual(updatedTodo);
+    });
+
+    const req = httpMock.expectOne(`${environment.apiUrl}/tasks/1`);
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual(updatedTodo);
+    req.flush(updatedTodo);
+  });
+});

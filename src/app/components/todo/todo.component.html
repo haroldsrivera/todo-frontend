@@ -1,15 +1,15 @@
 <div class="container my-5">
   <div class="row g-4 align-items-stretch">
-
     <!-- Formulario -->
     <div class="col-md-5">
       <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-gradient color-left text-white rounded-top-4">
+        <div
+          class="card-header bg-gradient color-left text-white rounded-top-4"
+        >
           <h5 class="mb-0 fw-bold">Nueva Tarea</h5>
         </div>
         <div class="card-body p-4">
           <form #todoForm="ngForm" (ngSubmit)="save()" novalidate>
-
             <div class="mb-3">
               <label class="form-label fw-semibold">Título</label>
               <input
@@ -20,7 +20,10 @@
                 required
                 #titleInput="ngModel"
               />
-              <div *ngIf="titleInput.invalid && titleInput.touched" class="text-danger small">
+              <div
+                *ngIf="titleInput.invalid && titleInput.touched"
+                class="text-danger small"
+              >
                 El título es obligatorio.
               </div>
             </div>
@@ -35,7 +38,10 @@
                 required
                 #descInput="ngModel"
               />
-              <div *ngIf="descInput.invalid && descInput.touched" class="text-danger small">
+              <div
+                *ngIf="descInput.invalid && descInput.touched"
+                class="text-danger small"
+              >
                 La descripción es obligatoria.
               </div>
             </div>
@@ -55,9 +61,19 @@
               class="btn btn-lg color-left w-100 text-white rounded-3 fw-semibold"
               [disabled]="todoForm.invalid"
             >
-              <h5 class="fw-bold m-0">Guardar</h5>
+              <h5 class="fw-bold m-0">
+                {{ editingId ? "Actualizar" : "Guardar" }}
+              </h5>
             </button>
 
+            <button
+              *ngIf="editingId"
+              type="button"
+              class="btn btn-outline-secondary mt-2 w-100 rounded-3 fw-semibold"
+              (click)="cancelEdit()"
+            >
+              Cancelar edición
+            </button>
           </form>
         </div>
       </div>
@@ -73,6 +89,7 @@
           <table class="table table-hover table-striped mb-0">
             <thead class="table-light">
               <tr>
+                <th class="fw-semibold text-center">Ver</th>
                 <th class="fw-semibold">Título</th>
                 <th class="fw-semibold">Descripción</th>
                 <th class="fw-semibold">Fecha</th>
@@ -81,17 +98,32 @@
             </thead>
             <tbody>
               <tr *ngFor="let task of todos">
-                <td>{{ task.title }}</td>
-                <td>{{ task.description }}</td>
-                <td>{{ task.date }}</td>
+                <!-- Botón VER -->
                 <td class="text-center">
-                  <button class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="confirmDelete(task.id!)">
+                  <button class="btn btn-sm btn-outline-success" (click)="viewDetails(task)">
+                    Ver
+                  </button>
+                </td>
+
+                <!-- Datos -->
+                <td class="text-truncate" style="max-width: 80px;" title="{{ task.title }}">{{ task.title }}</td>
+                <td class="text-truncate" style="max-width: 150px;" title="{{ task.description }}">{{ task.description }}</td>
+                <td>{{ task.date }}</td>
+
+                <!-- Acciones -->
+                <td class="text-center">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="edit(task)">
+                    Editar
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="confirmDelete(task.id!)">
                     Eliminar
-                  </button>                  
+                  </button>
                 </td>
               </tr>
+
+              <!-- Sin registros -->
               <tr *ngIf="todos.length === 0">
-                <td colspan="4" class="text-center text-muted py-4">
+                <td colspan="5" class="text-center text-muted py-4">
                   Sin registros.
                 </td>
               </tr>
@@ -105,7 +137,10 @@
 </div>
 
 <!-- TOAST CONTAINER -->
-<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+<div
+  class="toast-container position-fixed top-0 end-0 p-3"
+  style="z-index: 1100"
+>
   <div
     class="toast align-items-center text-bg-success border-0"
     role="alert"
@@ -114,10 +149,13 @@
     id="successToast"
   >
     <div class="d-flex">
-      <div class="toast-body">
-        Tarea creada correctamente.
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <div class="toast-body">Tarea creada correctamente.</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
     </div>
   </div>
 
@@ -129,29 +167,70 @@
     id="deleteToast"
   >
     <div class="d-flex">
+      <div class="toast-body">Tarea eliminada correctamente.</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+
+  <div
+    class="toast align-items-center text-bg-primary border-0 mt-2"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    id="updateToast"
+    >
+    <div class="d-flex">
       <div class="toast-body">
-        Tarea eliminada correctamente.
+        Tarea actualizada correctamente.
       </div>
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+
+
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-labelledby="confirmDeleteModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-4 shadow-lg">
       <div class="modal-header bg-gradient color-left text-white rounded-top-4">
-        <h5 class="modal-title fw-bold" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <h5 class="modal-title fw-bold" id="confirmDeleteModalLabel">
+          Confirmar Eliminación
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Cerrar"
+        ></button>
       </div>
       <div class="modal-body text-center">
         ¿Estás seguro de que deseas eliminar esta tarea?
       </div>
       <div class="modal-footer justify-content-center border-0 pb-4">
-        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">
+        <button
+          type="button"
+          class="btn btn-outline-secondary rounded-pill px-4 fw-semibold"
+          data-bs-dismiss="modal"
+        >
           No
         </button>
-        <button type="button" class="btn btn-danger rounded-pill px-4 fw-semibold" (click)="deleteConfirmed()">
+        <button
+          type="button"
+          class="btn btn-danger rounded-pill px-4 fw-semibold"
+          (click)="deleteConfirmed()"
+        >
           Sí
         </button>
       </div>
@@ -159,3 +238,4 @@
   </div>
 </div>
 
+<app-detail-task *ngIf="selectedTask" [task]="selectedTask"></app-detail-task>

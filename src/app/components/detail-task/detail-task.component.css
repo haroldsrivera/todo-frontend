@@ -1,0 +1,10 @@
+.modal-body {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 1rem;
+}
+
+.modal-header {
+  background-color: rgb(129, 153, 185); /* o el color que uses como color-table */
+  color: white;
+}

@@ -31,6 +31,12 @@ export class TodoService {
     });
   }
 
+  getById(id: number): Observable<Todo> {
+    return this.http.get<Todo>(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
   create(todo: Todo): Observable<Todo> {
     return this.http.post<Todo>(this.apiUrl, todo, {
       headers: this.getAuthHeaders()
@@ -39,6 +45,12 @@ export class TodoService {
 
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  update(id: number, todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`${this.apiUrl}/${id}`, todo, {
       headers: this.getAuthHeaders()
     });
   }
