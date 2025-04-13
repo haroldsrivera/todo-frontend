@@ -29,25 +29,29 @@ export class LoginComponent {
   onLogin(): void {
     this.todoService.login(this.email, this.password).subscribe({
       next: (response) => {
-        if (typeof response === 'string' && response.includes('Login exitoso')) {
-          this.authService.login(); 
+        if (response.token) {
+          this.authService.login(response.token); 
           this.router.navigate(['/todo']);
         } else {
-          this.showToast('errorCredentials');
+          this.error = 'Credenciales incorrectas.';
+          this.showToast('errorCredentials'); 
         }
       },
       error: () => {
-        this.showToast('errorCredentials');
+        this.error = 'Credenciales incorrectas.';
+        this.showToast('errorCredentials'); 
       }
-    });
+    });    
   }
+  
+  
 
   showToast(toastId: string) {
-      const toastElement = document.getElementById(toastId);
-      if (toastElement) {
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
-      }
+    const toastElement = document.getElementById(toastId);
+    if (toastElement) {
+      const toast = new bootstrap.Toast(toastElement);
+      toast.show();
     }
+  }  
 
 }
