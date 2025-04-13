@@ -1,14 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Todo } from '../models/todo.model';
 import { environment } from '../../environments/environment';
+import { Todo } from '../models/todo.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService {
 
+export class TodoService {
   private apiUrl = `${environment.apiUrl}/tasks`;
   private loginUrl = `${environment.apiUrl}/auth/login`;
 

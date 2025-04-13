@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
@@ -21,16 +21,20 @@ import * as bootstrap from 'bootstrap';
         InputTextModule,
         ButtonModule,
         CalendarModule,
-        ConfirmDialogModule,
+        DialogModule,
     ],
     providers: [ConfirmationService, MessageService],
     templateUrl: './todo.component.html',
     styleUrl: './todo.component.css'
 })
+
 export class TodoComponent implements OnInit {
 
   todos: Todo[] = [];
   todo: Todo = { title: '', description: '', date: new Date().toISOString().substring(0, 10) };
+
+  showConfirmDialog: boolean = false;
+  idToDelete: number | null = null;
 
   constructor(
     private todoService: TodoService,
@@ -52,12 +56,30 @@ export class TodoComponent implements OnInit {
       this.showToast('successToast');
     });
   }
+
+  confirmDelete(id: number): void {
+    this.idToDelete = id;
+    const modalEl = document.getElementById('confirmDeleteModal');
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
+  }
+
+  deleteConfirmed(): void {
+    if (this.idToDelete !== null) {
+      this.todoService.delete(this.idToDelete).subscribe(() => {
+        this.loadTodos();
+        this.showToast('deleteToast');
+        this.idToDelete = null;
   
-  delete(id: number): void {
-    this.todoService.delete(id).subscribe(() => {
-      this.loadTodos();
-      this.showToast('deleteToast');
-    });
+        const modalEl = document.getElementById('confirmDeleteModal');
+        if (modalEl) {
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal?.hide();
+        }
+      });
+    }
   }
 
   showToast(toastId: string) {
@@ -67,5 +89,4 @@ export class TodoComponent implements OnInit {
       toast.show();
     }
   }
-
 }

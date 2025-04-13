@@ -85,9 +85,9 @@
                 <td>{{ task.description }}</td>
                 <td>{{ task.date }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="delete(task.id!)">
+                  <button class="btn btn-sm btn-outline-danger rounded-pill px-3" (click)="confirmDelete(task.id!)">
                     Eliminar
-                  </button>
+                  </button>                  
                 </td>
               </tr>
               <tr *ngIf="todos.length === 0">
@@ -136,3 +136,26 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header bg-gradient color-left text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center">
+        ¿Estás seguro de que deseas eliminar esta tarea?
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold" data-bs-dismiss="modal">
+          No
+        </button>
+        <button type="button" class="btn btn-danger rounded-pill px-4 fw-semibold" (click)="deleteConfirmed()">
+          Sí
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

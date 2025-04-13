@@ -20,7 +20,7 @@ export class AuthService {
     return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
-  // Obtener el token actual (por si lo necesitas en otros servicios)
+  // Obtener el token actual 
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }

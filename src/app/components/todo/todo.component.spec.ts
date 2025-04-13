@@ -1,23 +1,44 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { Todo } from '../../models/todo.model';
 
-import { TodoComponent } from './todo.component';
+@Injectable({
+  providedIn: 'root'
+})
+export class TodoService {
+  private apiUrl = `${environment.apiUrl}/tasks`;
+  private loginUrl = `${environment.apiUrl}/auth/login`;
 
-describe('TodoComponent', () => {
-  let component: TodoComponent;
-  let fixture: ComponentFixture<TodoComponent>;
+  constructor(private http: HttpClient) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TodoComponent]
-    })
-    .compileComponents();
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(this.loginUrl, { email, password });
+  }
 
-    fixture = TestBed.createComponent(TodoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  getAll(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.apiUrl, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  create(todo: Todo): Observable<Todo> {
+    return this.http.post<Todo>(this.apiUrl, todo, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+}
